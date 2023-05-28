@@ -1,0 +1,37 @@
+ body{
+    padding: 10px 50px 50px;
+ }
+
+ a{
+    color:green;
+    text-decoration: none;
+ }
+
+ a:hover{
+    color: rgba(6, 6, 6, 0.883);
+ }
+
+ a.button{
+    color: white;
+    background-color: rgb(30, 135, 20);
+    padding:7px 7px 8px;
+    font-size: 15px;
+
+ }
+
+ td{
+    padding: 12px;
+ }
+
+ tr:nth-of-type(2n){
+
+    background-color: rgba(128, 128, 128, 0.26);
+
+ }
+
+ th:nth-child(n){
+    border-bottom: 2px solid gold;
+ }
+
+ 
+ 
