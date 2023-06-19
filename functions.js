@@ -3,7 +3,7 @@ function attachHomePage() {
 
   container.innerHTML = `
     <h1>Books</h1>
-	<p><a class="button" href="new_book.html">Create New Book</a></p>
+	<p class="button" >Create New Book</p>
 	<table>
 		<thead>
 			<tr>
@@ -136,21 +136,116 @@ function attachHomePage() {
 			</tr>
 		</tbody>
 	</table>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     `;
+
+
+	let btn=document.querySelector(".button");
+
+
+	let booksContainer=document.querySelector(".books-container");
+
+
+	booksContainer.addEventListener("click",(e)=>{
+
+		let obj=e.target;
+
+		if(obj.classList.contains("title")){
+
+	
+		 let book = books.find(function(book) {
+			return book.title === obj.innerText;
+		  });
+
+		  attachUpdatePage(book);
+
+			
+			
+	}
+	
+	
+
+		
+
+
+		
+	});
+
+
+
+	btn.addEventListener("click",()=>{
+
+
+		attachNewBookPage();
+	});
+
     attachRows(books);
+}
+
+function attachUpdatePage(book){
+	let container = document.querySelector(".container");
+
+	container.innerHTML = ` <h1>Update Book</h1>
+        <p>
+            <label for="title">Title</label>
+            <input name="title" class="inpttitle" type="text" id="title" value="${book.title}">
+        </p>
+        <p>
+            <label for="author">Author</label>
+            <input name="author" class="inptauthor" type="text" id="author" value="${book.author}">
+        </p>
+        <p>
+            <label for="genre">Genre</label>
+            <input name="genre" class="inptgenre" type="text" id="genre" value="${book.genre}">
+        </p>
+        <p>
+            <label for="year">Year</label>
+            <input name="year" class="inptyear" type="text" id="year" value="${book.year}">
+        </p>
+        <p>
+            <input class="update-button" type="submit" value="Update Book">
+        </p>
+ 
+       <p> <a class=" button cancel-button" >Cancel</a> </p>
+        <p><input class="delete-button" type="submit" value="Delete Book"></p>
+    `;
+
+	let deleteBook = document.querySelector(".delete-button");
+
+	deleteBook.addEventListener("click",()=>{	
+
+		books = deleteBooks(book.id);
+
+		attachHomePage();
+	});
+
+	let update = document.querySelector(".update-button");
+ 
+
+	let inptTitle = document.querySelector(".inpttitle");
+
+	let inptAuthor = document.querySelector(".inptauthor");
+
+	let inptGenre = document.querySelector(".inptgenre");
+
+	let inptYear = document.querySelector(".inptyear");
+
+	
+	update.addEventListener("click",()=>{
+
+		let updateBook={id:book.id,title:inptTitle.value,author:inptAuthor.value,genre:inptGenre.value,year:inptYear.value};
+
+		books[book.id-1] = updateBook;
+
+		attachHomePage();
+	});
+
+	let cancel = document.querySelector(".cancel-button");
+
+	cancel.addEventListener("click",()=>{
+
+		attachHomePage();
+	});
+	
 }
 
 function attachRows(arr){
@@ -180,7 +275,7 @@ function createRow(book) {
   return `
 
             <tr>
-				<td>
+				<td class="title">
 					${book.title}
 				</td>
 				<td>${book.author}</td>
@@ -190,3 +285,129 @@ function createRow(book) {
 
 `;
 }
+
+
+function attachNewBookPage(){
+
+	let container = document.querySelector(".container");
+
+	let errors=[];
+
+	container.innerHTML=`
+
+		<div class='container-errors'>
+		</div>
+	
+		<h1>New Book</h1>
+    <section>
+        <p>
+            <label for="title">Title</label>
+            <input name="title" class="title-inpt" type="text" id="title">
+        </p>
+        <p>
+            <label for="author">Author</label>
+            <input name="author" class ="author-inpt" type="text" id="author">
+        </p>
+        <p>
+            <label for="genre">Genre</label>
+            <input name="genre" class="genre-inpt" type="text" id="genre">
+        </p>
+        <p>
+            <label for="year">Year</label>
+            <input name="year" class="year-inpt" type="text" id="year">
+        </p>
+		<p class="button" >Create New Book</p>
+        <p>
+            <a class="button cancel-button"  >Cancel</a>
+        </p>
+    </section>`;
+
+
+
+	let inptTitle=document.querySelector(".title-inpt");
+	let btn=document.querySelector(".button");
+
+	let inptAuthor = document.querySelector(".author-inpt");
+	let inptGenre = document.querySelector(".genre-inpt");
+	let inptYear = document.querySelector(".year-inpt");
+
+	
+		btn.addEventListener("click",()=>{
+
+			errors=[];
+		let book = {
+			title: inptTitle.value,
+			author: inptAuthor.value,
+			genre: inptGenre.value,
+			year: inptYear.value
+		  };
+		
+
+
+	    if(inptTitle.value !== "" && inptAuthor.value !== ""){
+		books.push(book);
+
+		attachHomePage();
+		console.log("Cartea a fost adaugata cu success!");
+		}else {
+			
+			
+			for (const property in book) {
+			
+				 if(book[property]===""){
+					errors.push(`${property}: missing!!!`);
+				 }
+			}
+		
+			attachErrors(errors);
+		}
+	});
+
+
+	let cancel = document.querySelector(".cancel-button");
+
+	cancel.addEventListener("click",()=>{
+
+		attachHomePage();
+	});
+
+
+}
+
+
+function attachErrors(errors){
+	let containerErrors=document.querySelector(".container-errors");
+	let text=`
+	<ul class="error">`
+	errors.forEach(err=>{
+
+		text+=`<li>${err}</li>`;
+	})
+	text+="</ul>";
+
+
+	containerErrors.innerHTML=text;
+}
+
+function deleteBooks(id){
+
+	let arr=[];
+	
+	books.forEach((book)=>{
+
+		
+
+		if(book.id !== id){
+
+			arr.push(book);
+
+			
+			
+		}
+		
+
+	});
+
+	return arr;
+}
+

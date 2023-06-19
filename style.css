@@ -95,3 +95,15 @@ input[type=text] {
 .error {
   color: rgb(236, 15, 15);
 }
+
+.button{
+  background-color: #019875;
+  width: 10%;
+  display: block;
+
+}
+
+.title{
+  cursor: pointer;
+
+}
